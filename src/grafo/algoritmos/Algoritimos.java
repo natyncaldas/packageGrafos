@@ -1,6 +1,6 @@
-package grafos.algoritmos;
+package grafo.algoritmos;
 
-import grafos.Grafo;
+import grafo.Grafo;
 import java.util.HashMap;
 
 public class Algoritimos{
@@ -18,8 +18,32 @@ public class Algoritimos{
         this.f = new HashMap<>();
         this.tempo = 0;
     }
+    public HashMap<Character, String> getCor() {
+        return cor;
+    }
+
+    public HashMap<Character, Character> getPai() {
+        return pai;
+    }
+
+    public HashMap<Character, Integer> getB() {
+        return b;
+    }
+
+    public HashMap<Character, Integer> getF() {
+        return f;
+    }
+
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
 
     public void ABP()  {
+        this.limparValores();
         for (Character u:this.grafo.getVertices().getConjunto()) {
             this.cor.put(u, "branco");
             this.pai.put(u, null);
@@ -36,23 +60,31 @@ public class Algoritimos{
     }
 
     private void visita(Character v){
-        this.cor.replace(v, "cinza");
-        this.tempo++;
-        this.b.replace(v, tempo);
-        for(Character u:this.grafo.getLista().get(v).getConjunto()){
-            if(this.cor.get(u).equals("branco")){
-                this.pai.replace(u, v);
-                this.visita(u);
+            this.cor.replace(v, "cinza");
+            this.tempo++;
+            this.b.replace(v, tempo);
+            for(Character u:this.grafo.getLista().get(v).getConjunto()){
+                if(this.cor.get(u).equals("branco")){
+                    this.pai.replace(u, v);
+                    this.visita(u);
+                }
             }
-        }
-        this.cor.replace(v, "preto");
-        this.tempo++;
-        this.f.replace(v, tempo);
+            this.cor.replace(v, "preto");
+            this.tempo++;
+            this.f.replace(v, tempo);
+    }
+
+    private void limparValores(){
+        this.cor.clear();
+        this.pai.clear();
+        this.b.clear();
+        this.f.clear();
+        this.tempo = 0;
     }
 
     @Override
     public String toString(){
-        String s = this.getClass().getName().toUpperCase()+":\n";
+        String s = this.getClass().getPackageName().toUpperCase()+":\n";
 
         for (Character i:this.pai.keySet()) {
             s += "Pai["+i+"]: "+this.pai.get(i)+"\n";

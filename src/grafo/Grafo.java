@@ -1,4 +1,4 @@
-package grafos;
+package grafo;
 import java.util.HashMap;
 
 public class Grafo {
@@ -61,7 +61,7 @@ public class Grafo {
 
     @Override
     public String toString(){
-        String s = this.getClass().getName().toUpperCase()+":\n";
+        String s = this.getClass().getPackageName().toUpperCase()+":\n";
         for (Character i:this.lista.keySet()) {
             s = s+ "Vértice "+i+": "+this.lista.get(i).getConjunto()+"\n";
         }

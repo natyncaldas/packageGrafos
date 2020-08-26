@@ -32,30 +32,44 @@ public class Grafo {
         return this.direcionado;
     }
 
-    public void adicionarVertices(Character... id){
-        for (Character i:id) {
+    public void adicionarVertices(Character... v){
+        for (Character i:v) {
             this.vertices.getConjunto().add(i);
             lista.put(i, new Vertices());
         }
     }
 
-    public void conectarVertices(Character a, Character b){
+    public void conectarVertices(Character ini, Character fim){
         try{
-            if(!this.lista.containsKey(b)){
+            if(!this.lista.containsKey(fim)){
                 throw new ArithmeticException();
             }
-            this.lista.get(a).getConjunto().add(b);
+            this.lista.get(ini).getConjunto().add(fim);
             if(!direcionado) {
-                this.lista.get(b).getConjunto().add(a);
+                this.lista.get(fim).getConjunto().add(ini);
             }
         }catch (Exception e){
             System.out.println(new Exception("Vértice inválido."));
         }
     }
 
-    public void conectarTodos(Character a, Character... b){
-        for (Character i:b) {
-            this.conectarVertices(a, i);
+    public void conectarTodos(Character ini, Character... fim){
+        for (Character i:fim) {
+            this.conectarVertices(ini, i);
+        }
+    }
+
+    public void removerVertice(Character v){
+        this.lista.remove(v);
+        this.vertices.getConjunto().remove(v);
+        for (Character i: this.lista.keySet()) {
+            this.lista.get(i).getConjunto().remove(v);
+        }
+    }
+
+    public void removerTodos(Character... v){
+        for (Character i:v) {
+            this.removerVertice(i);
         }
     }
 

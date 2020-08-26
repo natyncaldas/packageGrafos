@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class Grafo {
     private Vertices vertices;
     private HashMap<Character, Vertices> lista;
-    private boolean direcionado;
+    private final boolean direcionado;
 
     public Grafo(boolean direcionado) {
         this.vertices = new Vertices();
@@ -39,7 +39,7 @@ public class Grafo {
         }
     }
 
-    public void conectarVertices(Character ini, Character fim){
+    public void conectarVertices(Character ini, Character fim) throws Exception {
         try{
             if(!this.lista.containsKey(fim)){
                 throw new ArithmeticException();
@@ -49,25 +49,29 @@ public class Grafo {
                 this.lista.get(fim).getConjunto().add(ini);
             }
         }catch (Exception e){
-            System.out.println(new Exception("Vértice inválido."));
+            throw new Exception("Vértice inválido.");
         }
     }
 
-    public void conectarTodos(Character ini, Character... fim){
+    public void conectarTodos(Character ini, Character... fim) throws Exception {
         for (Character i:fim) {
             this.conectarVertices(ini, i);
         }
     }
 
-    public void removerVertice(Character v){
-        this.lista.remove(v);
-        this.vertices.getConjunto().remove(v);
-        for (Character i: this.lista.keySet()) {
-            this.lista.get(i).getConjunto().remove(v);
+    public void removerVertice(Character v) throws Exception {
+        try {
+            this.lista.remove(v);
+            this.vertices.getConjunto().remove(v);
+            for (Character i: this.lista.keySet()) {
+                this.lista.get(i).getConjunto().remove(v);
+            }
+        }catch (Exception e){
+                throw new Exception("Vértice inválido.");
         }
     }
 
-    public void removerTodos(Character... v){
+    public void removerTodos(Character... v) throws Exception {
         for (Character i:v) {
             this.removerVertice(i);
         }

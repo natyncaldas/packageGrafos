@@ -60,18 +60,18 @@ public class Algoritimos{
     }
 
     private void visita(Character v){
-            this.cor.replace(v, "cinza");
-            this.tempo++;
-            this.b.replace(v, tempo);
-            for(Character u:this.grafo.getLista().get(v).getConjunto()){
-                if(this.cor.get(u).equals("branco")){
-                    this.pai.replace(u, v);
-                    this.visita(u);
-                }
+        this.cor.replace(v, "cinza");
+        this.tempo++;
+        this.b.replace(v, tempo);
+        for(Character u:this.grafo.getLista().get(v).getConjunto()){
+            if(this.cor.get(u).equals("branco")){
+                this.pai.replace(u, v);
+                this.visita(u);
             }
-            this.cor.replace(v, "preto");
-            this.tempo++;
-            this.f.replace(v, tempo);
+        }
+        this.cor.replace(v, "preto");
+        this.tempo++;
+        this.f.replace(v, tempo);
     }
 
     private void limparValores(){

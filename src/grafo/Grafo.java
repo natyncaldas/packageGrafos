@@ -16,16 +16,8 @@ public class Grafo {
         return vertices;
     }
 
-    public void setVertices(Vertices vertices) {
-        this.vertices = vertices;
-    }
-
     public HashMap<Character, Vertices> getLista() {
         return lista;
-    }
-
-    public void setLista(HashMap<Character, Vertices> lista) {
-        this.lista = lista;
     }
 
     public boolean isDirecionado(){
@@ -39,39 +31,34 @@ public class Grafo {
         }
     }
 
-    public void conectarVertices(Character ini, Character fim) throws Exception {
-        try{
-            if(!this.lista.containsKey(fim)){
-                throw new ArithmeticException();
-            }
-            this.lista.get(ini).getConjunto().add(fim);
-            if(!direcionado) {
-                this.lista.get(fim).getConjunto().add(ini);
-            }
-        }catch (Exception e){
-            throw new Exception("Vértice inválido.");
+    public void conectarVertices(Character ini, Character fim) throws InvalidVertexException {
+        if (!this.lista.containsKey(ini) || !this.lista.containsKey(fim)) {
+            throw new InvalidVertexException() ;
+        }
+        this.lista.get(ini).getConjunto().add(fim);
+        if (!direcionado) {
+            this.lista.get(fim).getConjunto().add(ini);
         }
     }
 
-    public void conectarTodos(Character ini, Character... fim) throws Exception {
+    public void conectarTodos(Character ini, Character... fim) throws InvalidVertexException {
         for (Character i:fim) {
             this.conectarVertices(ini, i);
         }
     }
 
-    public void removerVertice(Character v) throws Exception {
-        try {
-            this.lista.remove(v);
-            this.vertices.getConjunto().remove(v);
-            for (Character i: this.lista.keySet()) {
-                this.lista.get(i).getConjunto().remove(v);
-            }
-        }catch (Exception e){
-                throw new Exception("Vértice inválido.");
+    public void removerVertice(Character v) throws InvalidVertexException {
+        if(!this.lista.containsKey(v)){
+            throw new InvalidVertexException();
+        }
+        this.lista.remove(v);
+        this.vertices.getConjunto().remove(v);
+        for (Character i: this.lista.keySet()) {
+            this.lista.get(i).getConjunto().remove(v);
         }
     }
 
-    public void removerTodos(Character... v) throws Exception {
+    public void removerTodos(Character... v) throws InvalidVertexException {
         for (Character i:v) {
             this.removerVertice(i);
         }

@@ -1,2 +1,4 @@
 /src/Main.java
-/out/production/Desafio Grafos/Main.class
+*.class
+grafinho.*
+prog.exe

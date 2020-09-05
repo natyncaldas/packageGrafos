@@ -1,9 +1,10 @@
 package grafo;
+import java.io.*;
 import java.util.HashMap;
 
 public class Grafo {
-    private Vertices vertices;
-    private HashMap<Character, Vertices> lista;
+    private final Vertices vertices;
+    private final HashMap<Character, Vertices> lista;
     private final boolean direcionado;
 
     public Grafo(boolean direcionado) {
@@ -61,6 +62,47 @@ public class Grafo {
     public void removerTodos(Character... v) throws InvalidVertexException {
         for (Character i:v) {
             this.removerVertice(i);
+        }
+    }
+
+    public void importar(String fileName){
+        File file = new File(fileName);
+        try {
+            InputStream input = new FileInputStream(file);
+            byte[] num = input.readAllBytes();
+            for (byte b:num) {
+                char c = (char) b;
+                if(c > 32 && c < 127){
+                    this.adicionarVertices(c);
+                }
+            }
+        } catch (IOException e) {
+            e = new IOException("Arquivo não encontrado");
+            e.printStackTrace();
+        }
+    }
+    
+    public void exportar(){
+        File file = new File("grafo_salvo.bin");
+        
+        int i = 1;
+        while (file.exists()){
+            file = new File("grafo_salvo("+i+").bin");
+            i++;
+        }
+        try {
+            file.createNewFile();
+            OutputStream output = new FileOutputStream(file);
+            Vertices remover = new Vertices();
+            for (Character c:this.vertices.getConjunto()) {
+                output.write(c);
+                remover.getConjunto().add(c);
+            }
+            for (Character c:remover.getConjunto()){
+                this.removerVertice(c);
+            }
+        } catch (IOException | InvalidVertexException e) {
+            e.printStackTrace();
         }
     }
 

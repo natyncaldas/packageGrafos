@@ -29,6 +29,11 @@ public class Grafo {
         return this.vertices.getConjunto().size();
     }
 
+    public void limparGrafo(){
+        this.lista.clear();
+        this.vertices.getConjunto().clear();
+    }
+
     public void adicionarVertices(Character... v){
         for (Character i:v) {
             this.vertices.getConjunto().add(i);
@@ -70,6 +75,7 @@ public class Grafo {
     }
 
     public void importar(String fileName){
+        this.limparGrafo();
         File file = new File(fileName);
         try {
             InputStream input = new FileInputStream(file);
@@ -127,7 +133,6 @@ public class Grafo {
             for (Character c:remover.getConjunto()){
                 this.removerVertice(c);
             }
-
 
         } catch (IOException | InvalidVertexException e) {
             e.printStackTrace();

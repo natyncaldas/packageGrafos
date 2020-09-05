@@ -1,7 +1,8 @@
 package grafo.algoritmos;
 
 import grafo.Grafo;
-import java.util.HashMap;
+
+import java.util.*;
 
 public class Algoritimos{
     private Grafo grafo;
@@ -72,6 +73,25 @@ public class Algoritimos{
         this.cor.replace(v, "preto");
         this.tempo++;
         this.f.replace(v, tempo);
+    }
+
+    public ArrayList<Character> ordTopologica(){
+        this.limparValores();
+        this.ABP();
+        List<Map.Entry<Character, Integer>> entradas = new ArrayList<>(this.f.entrySet());
+        entradas.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
+        Map<Character, Integer> ord = new LinkedHashMap<>();
+        for (Map.Entry<Character, Integer> entry : entradas){
+            ord.put(entry.getKey(), entry.getValue());
+        }
+
+        ArrayList<Character> ordT = new ArrayList<>();
+        for (Character v:ord.keySet()) {
+            ordT.add(v);
+        }
+
+        return ordT;
     }
 
     private void limparValores(){

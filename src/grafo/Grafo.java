@@ -25,6 +25,10 @@ public class Grafo {
         return this.direcionado;
     }
 
+    public int tamanho(){
+        return this.vertices.getConjunto().size();
+    }
+
     public void adicionarVertices(Character... v){
         for (Character i:v) {
             this.vertices.getConjunto().add(i);
@@ -69,15 +73,24 @@ public class Grafo {
         File file = new File(fileName);
         try {
             InputStream input = new FileInputStream(file);
-            byte[] num = input.readAllBytes();
-            for (byte b:num) {
+            byte[] stream = input.readAllBytes();
+            for (byte b:stream) {
                 char c = (char) b;
                 if(c > 32 && c < 127){
                     this.adicionarVertices(c);
                 }
             }
-        } catch (IOException e) {
-            e = new IOException("Arquivo não encontrado");
+
+            if(this.hasAssinatura(stream)){
+                char ini = 0;
+                for (int i = 3+this.tamanho(); i < stream.length; i++) {
+                    ini = (stream[i-1] == -1) ? (char)stream[i] : ini;
+                    if(stream[i] != -1 && stream[i-1] != -1){
+                        this.conectarVertices(ini, (char)stream[i]);
+                    }
+                }
+            }
+        } catch (IOException | InvalidVertexException e) {
             e.printStackTrace();
         }
     }
@@ -93,17 +106,36 @@ public class Grafo {
         try {
             file.createNewFile();
             OutputStream output = new FileOutputStream(file);
+
+            output.write(0xff);
+            output.write(0x92);
+
             Vertices remover = new Vertices();
             for (Character c:this.vertices.getConjunto()) {
                 output.write(c);
                 remover.getConjunto().add(c);
             }
+            output.write(0xff);
+            for (Character c:this.lista.keySet()) {
+                output.write(c);
+                for (Character v:this.lista.get(c).getConjunto()) {
+                    output.write(v);
+                }
+                output.write(0xff);
+            }
+
             for (Character c:remover.getConjunto()){
                 this.removerVertice(c);
             }
+
+
         } catch (IOException | InvalidVertexException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean hasAssinatura(byte[] stream){
+        return (stream[0] == -1 && stream[1] == -110);
     }
 
     @Override

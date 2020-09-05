@@ -75,24 +75,35 @@ public class Grafo {
     }
 
     public void importar(String fileName){
-        this.limparGrafo();
         File file = new File(fileName);
         try {
             InputStream input = new FileInputStream(file);
+            this.limparGrafo();
             byte[] stream = input.readAllBytes();
-            for (byte b:stream) {
-                char c = (char) b;
-                if(c > 32 && c < 127){
-                    this.adicionarVertices(c);
-                }
-            }
 
             if(this.hasAssinatura(stream)){
+                int i = 2;
+                while (stream[i] != -1) {
+                    char c = (char) stream[i];
+                    if(c > 32 && c < 127){
+                        this.adicionarVertices(c);
+                    }
+                    i++;
+                }
+
                 char ini = 0;
-                for (int i = 3+this.tamanho(); i < stream.length; i++) {
+                for (i++; i < stream.length; i++) {
                     ini = (stream[i-1] == -1) ? (char)stream[i] : ini;
                     if(stream[i] != -1 && stream[i-1] != -1){
                         this.conectarVertices(ini, (char)stream[i]);
+                    }
+                }
+
+            }else{
+                for (byte b:stream) {
+                    char c = (char) b;
+                    if(c > 32 && c < 127){
+                        this.adicionarVertices(c);
                     }
                 }
             }
@@ -116,10 +127,8 @@ public class Grafo {
             output.write(0xff);
             output.write(0x92);
 
-            Vertices remover = new Vertices();
             for (Character c:this.vertices.getConjunto()) {
                 output.write(c);
-                remover.getConjunto().add(c);
             }
             output.write(0xff);
             for (Character c:this.lista.keySet()) {
@@ -130,11 +139,9 @@ public class Grafo {
                 output.write(0xff);
             }
 
-            for (Character c:remover.getConjunto()){
-                this.removerVertice(c);
-            }
+            this.limparGrafo();
 
-        } catch (IOException | InvalidVertexException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -145,10 +152,10 @@ public class Grafo {
 
     @Override
     public String toString(){
-        String s = this.getClass().getPackageName().toUpperCase()+":\n";
+        StringBuilder s = new StringBuilder(this.getClass().getPackageName().toUpperCase() + ":\n");
         for (Character i:this.lista.keySet()) {
-            s = s+ "Vértice "+i+": "+this.lista.get(i).getConjunto()+"\n";
+            s.append("Vértice ").append(i).append(": ").append(this.lista.get(i).getConjunto()).append("\n");
         }
-        return s;
+        return s.toString();
     }
 }

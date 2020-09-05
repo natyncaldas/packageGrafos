@@ -87,9 +87,7 @@ public class Algoritimos{
         }
 
         ArrayList<Character> ordT = new ArrayList<>();
-        for (Character v:ord.keySet()) {
-            ordT.add(v);
-        }
+        ordT.addAll(ord.keySet());
 
         return ordT;
     }
@@ -104,23 +102,23 @@ public class Algoritimos{
 
     @Override
     public String toString(){
-        String s = this.getClass().getPackageName().toUpperCase()+":\n";
+        StringBuilder s = new StringBuilder(this.getClass().getPackageName().toUpperCase() + ":\n");
 
         for (Character i:this.pai.keySet()) {
-            s += "Pai["+i+"]: "+this.pai.get(i)+"\n";
+            s.append("Pai[").append(i).append("]: ").append(this.pai.get(i)).append("\n");
         }
-        s += "\n";
+        s.append("\n");
         for (Character i:this.cor.keySet()) {
-            s += "Cor["+i+"]: "+this.cor.get(i)+"\n";
+            s.append("Cor[").append(i).append("]: ").append(this.cor.get(i)).append("\n");
         }
-        s += "\n";
+        s.append("\n");
         for (Character i:this.b.keySet()) {
-            s += "b["+i+"]: "+this.b.get(i)+"\n";
+            s.append("b[").append(i).append("]: ").append(this.b.get(i)).append("\n");
         }
-        s += "\n";
+        s.append("\n");
         for (Character i:this.f.keySet()) {
-            s += "f["+i+"]: "+this.f.get(i)+"\n";
+            s.append("f[").append(i).append("]: ").append(this.f.get(i)).append("\n");
         }
-        return s;
+        return s.toString();
     }
 }

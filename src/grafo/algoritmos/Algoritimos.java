@@ -10,6 +10,7 @@ public class Algoritimos{
     final private HashMap<Character, Character> pai;
     final private HashMap<Character, Integer> b, f;
     private int tempo;
+    ArrayList<Atributos>array;
 
     public Algoritimos(Grafo grafo){
         this.grafo = grafo;
@@ -18,7 +19,9 @@ public class Algoritimos{
         this.b = new HashMap<>();
         this.f = new HashMap<>();
         this.tempo = 0;
+        array = new ArrayList<>();
     }
+    
     public HashMap<Character, String> getCor() {
         return cor;
     }
@@ -50,6 +53,7 @@ public class Algoritimos{
             this.pai.put(u, null);
             this.b.put(u, 0);
             this.f.put(u, 0);
+            array.add(new Atributos(cor, pai, b, f));
         }
         this.tempo = 0;
 
@@ -64,15 +68,18 @@ public class Algoritimos{
         this.cor.replace(v, "cinza");
         this.tempo++;
         this.b.replace(v, tempo);
+        array.add(new Atributos(cor, pai, b, f));
         for(Character u:this.grafo.getLista().get(v).getConjunto()){
             if(this.cor.get(u).equals("branco")){
                 this.pai.replace(u, v);
+                array.add(new Atributos(cor, pai, b, f));
                 this.visita(u);
             }
         }
         this.cor.replace(v, "preto");
         this.tempo++;
         this.f.replace(v, tempo);
+        array.add(new Atributos(cor, pai, b, f));
     }
 
     public ArrayList<Character> ordTopologica(){
@@ -102,22 +109,11 @@ public class Algoritimos{
 
     @Override
     public String toString(){
-        StringBuilder s = new StringBuilder(this.getClass().getPackageName().toUpperCase() + ":\n");
-
-        for (Character i:this.pai.keySet()) {
-            s.append("Pai[").append(i).append("]: ").append(this.pai.get(i)).append("\n");
-        }
-        s.append("\n");
-        for (Character i:this.cor.keySet()) {
-            s.append("Cor[").append(i).append("]: ").append(this.cor.get(i)).append("\n");
-        }
-        s.append("\n");
-        for (Character i:this.b.keySet()) {
-            s.append("b[").append(i).append("]: ").append(this.b.get(i)).append("\n");
-        }
-        s.append("\n");
-        for (Character i:this.f.keySet()) {
-            s.append("f[").append(i).append("]: ").append(this.f.get(i)).append("\n");
+        StringBuilder s = new StringBuilder(this.getClass().getPackageName().toUpperCase() + ":\n\n");
+        int i = 1;
+        for (Atributos a: array) {
+            s.append("============ESTÁGIO ").append(i).append("============\n").append(a.toString()).append("\n");
+            i++;
         }
         return s.toString();
     }

@@ -1,26 +1,17 @@
 package grafo.algoritmos;
 
-import grafo.Grafo;
-
 import java.util.HashMap;
 
 public class Atributos {
-    private HashMap<Character, String> cor;
-    private HashMap<Character, Character> pai;
-    private HashMap<Character, Integer> b, f;
+    private final HashMap<Character, String> cor;
+    private final HashMap<Character, Character> pai;
+    private final HashMap<Character, Integer> b, f;
 
     public Atributos(HashMap<Character, String> cor, HashMap<Character, Character> pai, HashMap<Character, Integer> b, HashMap<Character, Integer> f){
         this.cor = new HashMap<>(cor);
         this.pai = new HashMap<>(pai);
         this.b = new HashMap<>(b);
         this.f = new HashMap<>(f);
-    }
-
-    public Atributos(){
-        this.cor = new HashMap<>();
-        this.pai = new HashMap<>();
-        this.b = new HashMap<>();
-        this.f = new HashMap<>();
     }
 
     @Override

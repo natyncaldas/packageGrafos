@@ -49,7 +49,7 @@ public class Algoritimos{
     public void ABP()  {
         this.limparValores();
         for (Character u:this.grafo.getVertices().getConjunto()) {
-            this.cor.put(u, "branco");
+            this.cor.put(u, Cores.BRANCO.cor());
             this.pai.put(u, null);
             this.b.put(u, 0);
             this.f.put(u, 0);
@@ -58,25 +58,25 @@ public class Algoritimos{
         this.tempo = 0;
 
         for (Character u:cor.keySet()) {
-            if(cor.get(u).equals("branco")){
+            if(cor.get(u).equals(Cores.BRANCO.cor())){
                 this.visita(u);
             }
         }
     }
 
     private void visita(Character v){
-        this.cor.replace(v, "cinza");
+        this.cor.replace(v, Cores.CINZA.cor());
         this.tempo++;
         this.b.replace(v, tempo);
         array.add(new Atributos(cor, pai, b, f));
         for(Character u:this.grafo.getLista().get(v).getConjunto()){
-            if(this.cor.get(u).equals("branco")){
+            if(this.cor.get(u).equals(Cores.BRANCO.cor())){
                 this.pai.replace(u, v);
                 array.add(new Atributos(cor, pai, b, f));
                 this.visita(u);
             }
         }
-        this.cor.replace(v, "preto");
+        this.cor.replace(v, Cores.PRETO.cor());
         this.tempo++;
         this.f.replace(v, tempo);
         array.add(new Atributos(cor, pai, b, f));
